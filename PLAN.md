@@ -1,0 +1,8 @@
+- [x] Create a local NATS cluster with JetStream streams using JetStream terraform provider
+  - [x] The streams should function as interest-based, durable queues
+  - [x] Create ~two consumers that pull items from the queues for work
+- [ ] The local NATS cluster should use decentralized auth so it can be added as a remote system in Synadia Cloud
+- [ ] Import the local system into Synadia Cloud
+- [ ] Mirror/source the streams into cloud
+- [ ] Use JetStream renaming techniques from this blog post to create a "single" stream?
+  - https://www.synadia.com/blog/multi-cluster-consistency-models
