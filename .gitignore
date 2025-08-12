@@ -1,3 +1,6 @@
+# nsc
+.nsc
+
 # Terraform
 .terraform
 .terraform.lock.hcl

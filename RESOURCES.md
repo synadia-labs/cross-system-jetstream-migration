@@ -1,7 +1,10 @@
 - NATS docs
-  - [JetStream stream placement](https://docs.nats.io/nats-concepts/jetstream/streams#placement)
-  - [JetStream source and mirroring](https://docs.nats.io/nats-concepts/jetstream/source_and_mirror)
-  - [Multi Tenancy using Accounts — Exporting and Importing](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/accounts#exporting-and-importing)
+  - JetStream
+    - [JetStream stream placement](https://docs.nats.io/nats-concepts/jetstream/streams#placement)
+    - [JetStream source and mirroring](https://docs.nats.io/nats-concepts/jetstream/source_and_mirror)
+    - [Multi Tenancy using Accounts — Exporting and Importing](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/accounts#exporting-and-importing)
+  - Decentralized Auth
+    - [Memory Resolver Tutorial](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt/mem_resolver)
 - Synadia
   - [Synadia Cloud BYON](https://www.synadia.com/blog/synadia-cloud-byon)
     - [docs](https://docs.synadia.com/cloud/byon#importing-an-existing-system)
