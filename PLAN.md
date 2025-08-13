@@ -2,7 +2,7 @@
   - [x] The streams should function as interest-based, durable queues
   - [x] Create ~two consumers that pull items from the queues for work
 - [x] The local NATS cluster should use decentralized auth so it can be added as a remote system in Synadia Cloud
-- [x] Import the local system into Synadia Cloud and connect with `private-link`
+- [x] Add a leaf node connection to NGS
 - [ ] Mirror/source the streams into cloud
 - [ ] Use JetStream renaming techniques from this blog post to create a "single" stream?
   - https://www.synadia.com/blog/multi-cluster-consistency-models
