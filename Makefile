@@ -1,7 +1,7 @@
 NSC_DIR := ./.nsc
 
 nats:
-	nats-server -c nats.conf -D
+	nats-server -c nats.conf
 
 init-nsc:
 	rm -rf $(NSC_DIR)

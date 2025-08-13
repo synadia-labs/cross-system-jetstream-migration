@@ -8,28 +8,24 @@ terraform {
 }
 
 provider "jetstream" {
-  servers     = "tls://connect.ngs.synadia-test.com:4222"
+  servers     = "tls://connect.ngs.synadia-test.com"
   credentials = "./cloud.creds"
 }
 
 resource "jetstream_stream" "QUEUE_source" {
   name      = "QUEUE_source"
-  subjects  = ["QUEUE.>"]
+  subjects  = ["_NOPE_"]
   storage   = "file"
-  retention = "interest"       // or "workqueue" ?
+  retention = "interest"
   max_age   = 24 * 60 * 60     // 24 hours
   max_bytes = 1024 * 1024 * 10 // 10Mi
   max_msgs  = 1024             // 1 Ki
 
-  # source from the imported stream
   source {
     name = "QUEUE"
-    # TODO: get from import.sh as tf variables
     external {
-      api     = "$scp.31CcDdRlPssxeBpNwpm9dnNw2pH.$JS.API"
-      deliver = "$scp.31CcDdRlPssxeBpNwpm9dnNw2pH.deliver.ADFITOJFGNYPL5TAXZ2BL5VAZK7L6XBJDLDXZ3PQWFWYCYSQK4TE222K"
+      api = "$JS.leaf.API"
     }
-    # subject_transform {}
   }
 }
 

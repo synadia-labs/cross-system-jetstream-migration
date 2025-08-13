@@ -3,8 +3,7 @@
     - [JetStream stream placement](https://docs.nats.io/nats-concepts/jetstream/streams#placement)
     - [JetStream source and mirroring](https://docs.nats.io/nats-concepts/jetstream/source_and_mirror)
     - [Multi Tenancy using Accounts — Exporting and Importing](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/accounts#exporting-and-importing)
-  - Decentralized Auth
-    - [Memory Resolver Tutorial](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt/mem_resolver)
+    - [How to source stream from a different JS domain in Terraform](https://github.com/nats-io/terraform-provider-jetstream/issues/72)
 - Synadia
   - [Multi-Region Consistency: Have Your Cake and Eat it Too!](https://www.synadia.com/blog/multi-cluster-consistency-models)
   - [Synadia Cloud BYON](https://www.synadia.com/blog/synadia-cloud-byon)
