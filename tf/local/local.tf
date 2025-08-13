@@ -8,7 +8,8 @@ terraform {
 }
 
 provider "jetstream" {
-  servers = "nats://localhost:4222"
+  servers     = "nats://localhost:4222"
+  credentials = "../../.nsc/creds/memory/A/admin.creds"
 }
 
 resource "jetstream_stream" "QUEUE" {

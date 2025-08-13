@@ -1,7 +1,16 @@
-# nsc
+# General
+.env
+.vscode
+
+# nats
 .nsc
+*.creds
+jwt
+synadia-private-link
 
 # Terraform
 .terraform
 .terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
 plan.out

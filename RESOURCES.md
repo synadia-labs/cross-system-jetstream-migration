@@ -6,9 +6,9 @@
   - Decentralized Auth
     - [Memory Resolver Tutorial](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/auth_intro/jwt/mem_resolver)
 - Synadia
+  - [Multi-Region Consistency: Have Your Cake and Eat it Too!](https://www.synadia.com/blog/multi-cluster-consistency-models)
   - [Synadia Cloud BYON](https://www.synadia.com/blog/synadia-cloud-byon)
     - [docs](https://docs.synadia.com/cloud/byon#importing-an-existing-system)
   - [Glossary — Leaf Nodes](https://www.synadia.com/glossary/nats-leaf-nodes)
 - Synadia internal
   - [Hosted JetStream Migration](https://docs.google.com/document/d/1eZ0J1GlzDjVWPuzrwI22DA8DZmJxQPGNurMGJTAx6rU/)
-- [Multi-Region Consistency: Have Your Cake and Eat it Too!](https://www.synadia.com/blog/multi-cluster-consistency-models)
