@@ -8,13 +8,12 @@ terraform {
 }
 
 provider "jetstream" {
-  servers     = "tls://connect.ngs.synadia-test.com"
+  servers     = "tls://connect.ngs.global"
   credentials = "./cloud.creds"
 }
 
 resource "jetstream_stream" "QUEUE_source" {
   name      = "QUEUE_source"
-  subjects  = ["_NOPE_"]
   storage   = "file"
   retention = "interest"
   max_age   = 24 * 60 * 60     // 24 hours
@@ -23,9 +22,9 @@ resource "jetstream_stream" "QUEUE_source" {
 
   source {
     name = "QUEUE"
-    external {
-      api = "$JS.leaf.API"
-    }
+    # external {
+    #   api = "$JS.leaf.API"
+    # }
   }
 }
 
