@@ -4,6 +4,7 @@
 
 # nats
 .nsc
+.leaf
 *.creds
 jwt
 synadia-private-link

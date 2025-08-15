@@ -280,3 +280,15 @@ Restart the NATS server (the `reload` signal is not supported when editing `leaf
 Verify the leaf node shows up in the Synadia Cloud connections graph, under `Team > System > Account > Connections`.
 
 ![Synadia Cloud connection graphs showing the local NATS server connected as a leaf node](./static/connection-graph.png)
+
+### Migrate services to use Synadia Cloud
+
+// TODO
+
+### Migrate publisher to use Synadia Cloud
+
+// TODO
+
+### Promote Synadia Cloud stream
+
+// TODO: remove stream subjects from leaf node system (or) block publishing on subjects, to prevent duplicate messages
