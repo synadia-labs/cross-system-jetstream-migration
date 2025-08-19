@@ -24,7 +24,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	nc, err := nats.Connect(config.URL, nats.UserCredentials(config.CredsPath))
+	nc, err := nats.Connect(config.URL, nats.UserCredentials(config.CredsPath), nats.Name("orders"))
 	if err != nil {
 		fmt.Println("Error connecting to NATS:", err)
 		os.Exit(1)
@@ -37,7 +37,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	queue, err := js.Stream(ctx, "QUEUE")
+	queue, err := js.Stream(ctx, config.StreamName)
 	if err != nil {
 		fmt.Println("Error getting stream info:", err)
 		os.Exit(1)

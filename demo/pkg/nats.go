@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	URL       string
-	CredsPath string
+	URL        string
+	CredsPath  string
+	StreamName string
 }
 
 func ReadConfig() (*Config, error) {
@@ -21,8 +22,14 @@ func ReadConfig() (*Config, error) {
 		return nil, fmt.Errorf("NATS_CREDS_PATH is not set")
 	}
 
+	streamName := os.Getenv("NATS_STREAM_NAME")
+	if streamName == "" {
+		return nil, fmt.Errorf("NATS_STREAM_NAME is not set")
+	}
+
 	return &Config{
-		URL:       natsUrl,
-		CredsPath: natsCredsPath,
+		URL:        natsUrl,
+		CredsPath:  natsCredsPath,
+		StreamName: streamName,
 	}, nil
 }

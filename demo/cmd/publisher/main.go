@@ -19,7 +19,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	nc, err := nats.Connect(config.URL, nats.UserCredentials(config.CredsPath))
+	nc, err := nats.Connect(config.URL, nats.UserCredentials(config.CredsPath), nats.Name("publisher"))
 	if err != nil {
 		fmt.Println("Error connecting to NATS:", err)
 		os.Exit(1)
