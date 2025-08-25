@@ -1,13 +1,15 @@
-- NATS docs
-  - JetStream
-    - [JetStream stream placement](https://docs.nats.io/nats-concepts/jetstream/streams#placement)
-    - [JetStream source and mirroring](https://docs.nats.io/nats-concepts/jetstream/source_and_mirror)
-    - [Multi Tenancy using Accounts — Exporting and Importing](https://docs.nats.io/running-a-nats-service/configuration/securing_nats/accounts#exporting-and-importing)
-    - [How to source stream from a different JS domain in Terraform](https://github.com/nats-io/terraform-provider-jetstream/issues/72)
-- Synadia
-  - [Multi-Region Consistency: Have Your Cake and Eat it Too!](https://www.synadia.com/blog/multi-cluster-consistency-models)
-  - [Synadia Cloud BYON](https://www.synadia.com/blog/synadia-cloud-byon)
-    - [docs](https://docs.synadia.com/cloud/byon#importing-an-existing-system)
-  - [Glossary — Leaf Nodes](https://www.synadia.com/glossary/nats-leaf-nodes)
-- Synadia internal
-  - [Hosted JetStream Migration](https://docs.google.com/document/d/1eZ0J1GlzDjVWPuzrwI22DA8DZmJxQPGNurMGJTAx6rU/)
+Leaf Nodes
+
+* [Leaf Nodes | NATS Docs](https://docs.nats.io/running-a-nats-service/configuration/leafnodes)  
+* [JetStream on Leaf Nodes | NATS Docs](https://docs.nats.io/running-a-nats-service/configuration/leafnodes/jetstream_leafnodes)  
+* [Synadia Cloud \- Connecting Leaf Nodes](https://docs.synadia.com/cloud/resources/leaf-nodes)  
+* [Extend your NATS Cluster with Leaf Nodes | Rethink Connectivity Episode 7](https://www.youtube.com/watch?v=WH55czo1BNk)  
+* [NATS Persistence at the Edge | JetStream on Leafnodes](https://www.youtube.com/watch?v=0MkS_S7lyHk)  
+  * [GitHub \- nats-io/jetstream-leaf-nodes-demo](https://github.com/nats-io/jetstream-leaf-nodes-demo)
+
+JetStream
+
+* [Source and Mirror Streams | NATS Docs](https://docs.nats.io/nats-concepts/jetstream/source_and_mirror)  
+* [GitHub \- synadia-labs/cross-account-jetstream-sourcing](https://github.com/synadia-labs/cross-account-jetstream-sourcing) (note: cross-account, not system)  
+* [GitHub \- nats-io/terraform-provider-jetstream](https://github.com/nats-io/terraform-provider-jetstream)  
+  * [How to add source stream from different JS Domain](https://github.com/nats-io/terraform-provider-jetstream/issues/72)
