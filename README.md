@@ -1,25 +1,28 @@
 # Cross-System JetStream Migration
 
-Steps for migrating JetStream assets to Synadia Cloud with minimal downtime and impact to the existing NATS Cluster.
-
----
+<!-- index: start -->
+Steps for migrating JetStream assets to [Synadia Cloud](https://www.synadia.com/cloud) with minimal downtime and impact to the existing NATS Cluster.
 
 The steps below include setting up a local NATS server with `nsc` for a fully reproducible walkthrough, creating streams and consumers with the NATS [Terraform JetStream provider](https://github.com/nats-io/terraform-provider-jetstream), and running a few Go micro services to mimic real services that publish to and consume from NATS streams.
 
 Required tooling:
-- [Go](https://go.dev/dl/)
-- [nats](https://github.com/nats-io/natscli/) — NATS CLI
-- [nsc](https://github.com/nats-io/nsc) — A tool for creating NATS operators, accounts, and users
-- [terraform](https://developer.hashicorp.com/terraform/cli/commands)
+
+- [NATS CLI](https://github.com/nats-io/natscli/)
+- [nsc](https://github.com/nats-io/nsc) — tool for creating NATS operators, accounts, and users
+- [Go](https://go.dev/dl/) — Required for NATS micro services
+- [Terraform](https://developer.hashicorp.com/terraform/cli/commands) — Required for provisioning JetStream assets
 
 ---
 
 The following steps minimize changes required to the existing self-managed system to mimic real world use cases. These steps do not require adding a JetStream domain. Instead, the leaf node is used as an intermediary between the self-managed and Synadia Cloud systems. Using a leaf node enables configuring a JetStream domain, which is needed to connect a NATS system with JetStream into Synadia Cloud and source/mirror from it.
 
-**Not** updating the self-managed system’s JetStream domain is desirable because updating the domain affects any client that had opened a JetStream context to the old domain. It might also break any sourcing/mirroring setups.
+**Not** updating the self-managed system’s JetStream domain is desirable because updating the domain affects any client that have an open a JetStream context to the old domain. It might also break any sourcing/mirroring setups.
 
-![](./drawing.png)
+![Diagram of all the connected NATS systems in this walkthrough](./docs/docs/static/drawing.png)
 
+<!-- index: end -->
+
+<!-- local: start -->
 ### Setup `.env`
 
 This example uses [direnv](https://direnv.net/) to load local `.env` files as shell variables.
@@ -228,7 +231,9 @@ Confirm that messages in the consumers are being processed.
 │ SHIPMENTS │ Pull │ Explicit   │ 30.00s   │ 10          │ 0           │ 12 / 8%     │ 147       │         │
 ╰───────────┴──────┴────────────┴──────────┴─────────────┴─────────────┴─────────────┴───────────┴─────────╯
 ```
+<!-- local: end -->
 
+<!-- leaf: start -->
 ### Create a separate NATS server that uses a JetStream domain, to be used as a leaf node
 
 Initialize a local `nsc` config for the leaf node.
@@ -379,7 +384,9 @@ Obtaining Stream stats
 │ QUEUE  │ File    │           │ 0         │ 0        │ 0 B   │ 0    │ 0       │ 0         │          │
 ╰────────┴─────────┴───────────┴───────────┴──────────┴───────┴──────┴─────────┴───────────┴──────────╯
 ```
+<!-- leaf: end -->
 
+<!-- cloud: start -->
 ### Connect the leaf node to the Synadia Cloud system
 
 First things first, we need to download NATS user credentials to connect the leaf node to Synadia Cloud.
@@ -409,7 +416,7 @@ Restart the NATS server (the `reload` signal is not supported when editing `leaf
 
 Verify the leaf node shows up in the Synadia Cloud connections graph, under `Team > System > Account > Connections`.
 
-![Synadia Cloud connection graphs showing the local NATS server connected as a leaf node](./static/connection-graph.png)
+![Synadia Cloud connection graphs showing the local NATS server connected as a leaf node](./docs/docs/static/connection-graph.png)
 
 ### Create streams in Synadia Cloud
 
@@ -494,7 +501,7 @@ View the created stream and consumers.
 
 You can also see the stream in Synadia Cloud.
 
-![Synadia Cloud stream](./static/stream.png)
+![Synadia Cloud stream](./docs/docs/static/stream.png)
 
 
 ### Migrate services to use Synadia Cloud
@@ -510,7 +517,7 @@ In general, updating services will depend on how the services interact with NATS
 
 Restart the `orders` and `shipments` services. Verify they are connected in the Synadia Cloud connections tab.
 
-![`orders` and `shipments` connected to Synadia Cloud in the connection graph](./static/connection-graph-consumers.png)
+![`orders` and `shipments` connected to Synadia Cloud in the connection graph](./docs/docs/static/connection-graph-consumers.png)
 
 Verify messages are being processed using the NATS CLI.
 ```shell
@@ -588,12 +595,15 @@ At this point, the Synadia Cloud stream will be sourcing messages from the leaf 
 
 Verify the Synadia Cloud stream is both ingesting messages from the publishers and the services are processing messages from the streams/consumers.
 
-![All NATS micro services connected to Synadia Cloud, shown in the connection graph](./static/connection-graph-publisher.png)
+![All NATS micro services connected to Synadia Cloud, shown in the connection graph](./docs/docs/static/connection-graph-publisher.png)
 
 ### Disconnect the leaf node
 
 Once you have verified all streams and consumers are migrated to Synadia Cloud and the publisher and services are working, you can disconnect and turn off the leaf node system. To disconnect it from the self-managed and Synadia Cloud systems, simply remove the `leafnodes` block from its server config and restart. You can also dispose of the leaf node system entirely.
 
-## Summary
+<!-- cloud: end -->
 
+## Summary
+<!-- summary: start -->
 The steps above can be repeated to move streams and consumers over piecemeal. This approach does not require a “big bang” migration and minimizes impact to the existing self-managed NATS system.
+<!-- summary: end -->

@@ -1,6 +1,7 @@
 # General
 .env
 .vscode
+.DS_Store
 
 # nats
 .nsc

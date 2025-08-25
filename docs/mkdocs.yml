@@ -1,0 +1,37 @@
+site_name: Cross-System JetStream Migration
+site_url: https://synadia-labs.github.io/cross-system-jetstream-migration
+repo_url: https://github.com/synadia-labs/cross-system-jetstream-migration
+repo_name: cross-system-jetstream-migration
+
+plugins:
+  - include-markdown
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+theme:
+  name: material
+  favicon: static/favicon.png
+  logo: static/favicon.png
+  palette:
+    primary: custom
+  font:
+    text: Inter
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.footer
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - Steps:
+    - Local: local.md
+    - Leaf: leaf.md
+    - Cloud: cloud.md
+    - Summary: summary.md
+  - Resources: resources.md
