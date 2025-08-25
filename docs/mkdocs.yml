@@ -13,6 +13,7 @@ markdown_extensions:
 
 theme:
   name: material
+  custom_dir: overrides
   favicon: static/favicon.png
   logo: static/favicon.png
   palette:
@@ -23,6 +24,10 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - navigation.footer
+
+extra:
+  analytics:
+    provider: custom
 
 extra_css:
   - stylesheets/extra.css
