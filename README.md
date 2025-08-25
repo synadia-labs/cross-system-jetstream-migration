@@ -1,5 +1,8 @@
 # Cross-System JetStream Migration
 
+> [!TIP]
+> See https://synadia-labs.github.io/cross-system-jetstream-migration/ for an easier way to consume this README
+
 <!-- index: start -->
 Steps for migrating JetStream assets to [Synadia Cloud](https://www.synadia.com/cloud) with minimal downtime and impact to the existing NATS Cluster.
 
