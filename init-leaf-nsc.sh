@@ -24,3 +24,7 @@ nsc --all-dirs "$NSC_DIR" add user --name leaf --account A
 
 # generate server config from nsc
 nsc --all-dirs "$NSC_DIR" generate config --mem-resolver --config-file "$NSC_DIR/nsc.conf"
+
+# update leaf node config
+NKEY=$(nsc --all-dirs .leaf describe account A --json -F sub)
+sed -i '' "s/A\.\.\./$NKEY/g" leaf.conf

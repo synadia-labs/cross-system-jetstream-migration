@@ -12,8 +12,9 @@ provider "jetstream" {
   credentials = "./cloud.creds"
 }
 
-resource "jetstream_stream" "QUEUE_source" {
-  name      = "QUEUE_source"
+resource "jetstream_stream" "QUEUE" {
+  name      = "QUEUE"
+  subjects  = ["QUEUE.>"]
   storage   = "file"
   retention = "interest"
   max_age   = 24 * 60 * 60     // 24 hours
@@ -29,7 +30,7 @@ resource "jetstream_stream" "QUEUE_source" {
 }
 
 resource "jetstream_consumer" "ORDERS_cloud" {
-  stream_id      = jetstream_stream.QUEUE_source.id
+  stream_id      = jetstream_stream.QUEUE.id
   durable_name   = "ORDERS"
   description    = "Processes new orders"
   deliver_all    = true
@@ -38,7 +39,7 @@ resource "jetstream_consumer" "ORDERS_cloud" {
 }
 
 resource "jetstream_consumer" "SHIPMENTS_cloud" {
-  stream_id      = jetstream_stream.QUEUE_source.id
+  stream_id      = jetstream_stream.QUEUE.id
   durable_name   = "SHIPMENTS"
   description    = "Processes shipments after orders are processed"
   deliver_all    = true
