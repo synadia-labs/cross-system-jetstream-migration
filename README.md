@@ -1,8 +1,25 @@
+# Cross-System JetStream Migration
+
+Steps for migrating JetStream assets to Synadia Cloud with minimal downtime and impact to the existing NATS Cluster.
+
+---
+
+The steps below include setting up a local NATS server with `nsc` for a fully reproducible walkthrough, creating streams and consumers with the NATS [Terraform JetStream provider](https://github.com/nats-io/terraform-provider-jetstream), and running a few Go micro services to mimic real services that publish to and consume from NATS streams.
+
+Required tooling:
+- [Go](https://go.dev/dl/)
+- [nats](https://github.com/nats-io/natscli/) — NATS CLI
+- [nsc](https://github.com/nats-io/nsc) — A tool for creating NATS operators, accounts, and users
+- [terraform](https://developer.hashicorp.com/terraform/cli/commands)
+
+![](./drawing.png)
 
 
 ## Steps
 
 ### Initialize operator, account, and users with `nsc`
+
+Initialize a local `nsc` config, including an operator, account, and users.
 
 ```shell
 ❯ make init-nsc
@@ -22,6 +39,8 @@
 ```
 
 ### Start local NATS server
+
+Start a local NATS server using the `nsc` configuration (`./.nsc/nsc.conf`).
 
 ```shell
 ❯ make
@@ -58,6 +77,9 @@ nats-server -c nats.conf
 ```
 
 ### Create local stream and consumers using Terraform.
+
+Provision a single stream and two consumers. These will be used by the Go micro services.
+
 ```shell
 ❯ cd ./tf/local
 ❯ terraform apply -auto-approve  # or `terraform plan -out plan.out` and `terraform apply plan.out`
@@ -118,7 +140,7 @@ Obtaining Stream stats
 
 ### Start publisher
 
-Begin publishing test data to the local stream. Install [Go](https://go.dev/) if it is not installed.
+Start the `publisher` Go micro service, which publishes new orders to the stream.
 
 ```shell
 ❯ cd demo
@@ -155,6 +177,9 @@ Obtaining Stream stats
 ### Start services
 
 Start the `orders` and `shipments` services, which will consume messages from their respective consumers.
+
+The `orders` service will trigger shipments when it finished processing the order. 
+
 ```shell
 ❯ cd demo
 ❯ make orders
@@ -185,7 +210,7 @@ Confirm that messages in the consumers are being processed.
 
 ### Download credentials for a NATS user from Synadia Cloud
 
-Navigate to the `Team > System > Account > NATS User` you want to use to connect the local system to Synadia Cloud. Click `Get Connected` and download the credentials file. Save it to `./tf/cloud/cloud.creds`.
+Navigate to the NATS User (`Team > System > Account > NATS User`) you want to use to connect the local system to Synadia Cloud. Click `Get Connected` and download the credentials file. Save it to `./tf/cloud/cloud.creds`.
 
 ### Create Synadia Cloud stream and consumers using Terraform.
 
