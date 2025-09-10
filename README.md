@@ -422,7 +422,7 @@ Verify the leaf node shows up in the Synadia Cloud connections graph, under `Tea
 
 ### Create streams in Synadia Cloud
 
-Create clones of the stream and consumers in Synadia Cloud using Terraform. This stream will use the original stream’s "interest" retention policy. Only the streams being sourced/mirroed **from** require the "limits" retention policy.
+Create clones of the stream and consumers in Synadia Cloud using Terraform. This stream will use the original stream’s "interest" retention policy. Only the streams being sourced/mirrored **from** require the "limits" retention policy.
 
 Note the use of `external.api` to map to the leaf node’s JetStream domain. This is required when sourcing across different NATS systems.
 
@@ -555,10 +555,10 @@ Verify messages are being processed using the NATS CLI.
 Update the Synadia Cloud stream to listen on the same subjects as its self-managed counterparts.
 
 ```toml
-# tf/cloud/cloud.td
+# tf/cloud/cloud.tf
 resource "jetstream_stream" "QUEUE" {
   name      = "QUEUE"
-  subjects     = ["QUEUE.>"]  # <-- add this line
+  # subjects     = ["QUEUE.>"]  # <-- add this line
   ...
 }
 ```
