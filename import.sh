@@ -35,7 +35,7 @@ jwtd() {
 }
 
 # get public nkey of A account from .nsc
-A_NKEY=$(cat .nsc/memory/accounts/A/A.jwt | jwtd | jq -r '.[1].sub')
+A_NKEY=$(cat .nsc/local/accounts/A/A.jwt | jwtd | jq -r '.[1].sub')
 
 EXPORT_ID=
 export_queue_stream() {

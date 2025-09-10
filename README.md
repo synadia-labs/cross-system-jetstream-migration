@@ -142,7 +142,7 @@ Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
 View the created stream and consumers.
 
 ```shell
-❯ nats --creds ../../.nsc/creds/memory/A/admin.creds stream report
+❯ nats --creds ../../.nsc/creds/local/A/admin.creds stream report
 Obtaining Stream stats
 
 ╭─────────────────────────────────────────────────────────────────────────────────────────╮
@@ -153,7 +153,7 @@ Obtaining Stream stats
 │ QUEUE  │ File    │           │ 2         │ 0        │ 0 B   │ 0    │ 0       │          │
 ╰────────┴─────────┴───────────┴───────────┴──────────┴───────┴──────┴─────────┴──────────╯
 
-❯ nats --creds ../../.nsc/creds/memory/A/admin.creds consumer report QUEUE
+❯ nats --creds ../../.nsc/creds/local/A/admin.creds consumer report QUEUE
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                Consumer report for QUEUE with 2 consumers                                │
 ├───────────┬──────┬────────────┬──────────┬─────────────┬─────────────┬─────────────┬───────────┬─────────┤
@@ -178,7 +178,7 @@ Publishing order 1
 In another tab, verify the stream has messages and the `ORDERS` consumer has unprocessed messages.
 ```shell
 # from the root of the repo
-❯ nats --creds .nsc/creds/memory/A/admin.creds stream report
+❯ nats --creds .nsc/creds/local/A/admin.creds stream report
 Obtaining Stream stats
 
 ╭─────────────────────────────────────────────────────────────────────────────────────────╮
@@ -189,7 +189,7 @@ Obtaining Stream stats
 │ QUEUE  │ File    │           │ 2         │ 3        │ 132 B │ 0    │ 0       │          │
 ╰────────┴─────────┴───────────┴───────────┴──────────┴───────┴──────┴─────────┴──────────╯
 
-❯ nats --creds .nsc/creds/memory/A/admin.creds consumer report QUEUE
+❯ nats --creds .nsc/creds/local/A/admin.creds consumer report QUEUE
 ╭────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                               Consumer report for QUEUE with 2 consumers                               │
 ├───────────┬──────┬────────────┬──────────┬─────────────┬─────────────┬─────────────┬───────────┬───────┤
@@ -224,7 +224,7 @@ Received shipment: 2
 Confirm that messages in the consumers are being processed.
 
 ```shell
-❯ nats --creds .nsc/creds/memory/A/admin.creds consumer report QUEUE
+❯ nats --creds .nsc/creds/local/A/admin.creds consumer report QUEUE
 ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │                                Consumer report for QUEUE with 2 consumers                                │
 ├───────────┬──────┬────────────┬──────────┬─────────────┬─────────────┬─────────────┬───────────┬─────────┤
