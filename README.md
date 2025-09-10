@@ -280,7 +280,6 @@ leafnodes {
 
 
 ```shell
-❯ make leaf
 ❯ make leaf                              
 nats-server -c leaf.conf
 [27274] 2025/08/25 08:35:30.283060 [INF] Starting nats-server
