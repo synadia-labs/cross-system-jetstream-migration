@@ -239,7 +239,7 @@ Confirm that messages in the consumers are being processed.
 <!-- leaf: start -->
 ### Create a separate NATS server that uses a JetStream domain, to be used as a leaf node
 
-Initialize a local `nsc` config for the leaf node.
+Initialize a local `nsc` config for the leaf node in the `.leaf` directory.
 
 ```shell
 ❯ make init-leaf-nsc
@@ -260,14 +260,16 @@ Initialize a local `nsc` config for the leaf node.
 
 ### Start leaf node NATS server
 
-Start the leaf node NATS server using the `nsc` configuration (`./.leaf/nsc.conf`). Note the `leafnodes.remotes` value that connects this server to the "local" server:
+Start the leaf node NATS server using the `nsc` configuration (`./.leaf/nsc.conf`). Note the `leafnodes.remotes` value that connects this server to the "local" server.
+
+The `subscriber` credentials used to connect to the local system only allow subscribing, not publishing. This is to prevent messages from flowing back into the local NATS system from Synadia Cloud (once connected to Synadia Cloud) and ultimately prevent duplicate messages in the streams.
 
 ```
 leafnodes {
   remotes = [
     {
       url: "nats://localhost:7422"
-      credentials: ".nsc/creds/local/A/admin.creds"
+      credentials: ".nsc/creds/local/A/subscriber.creds"
       account: "A..."
     },
     ...
@@ -517,7 +519,9 @@ In general, updating services will depend on how the services interact with NATS
 + NATS_CREDS_PATH=tf/cloud/cloud.creds
 ```
 
-Restart the `orders` and `shipments` services. Verify they are connected in the Synadia Cloud connections tab.
+First restart the `shipments` service as it is solely a consumer and not publishing. Then restart `orders` since it is both consuming and publishing downstream to `shipments`.
+
+Verify they are connected in the Synadia Cloud connections tab.
 
 ![`orders` and `shipments` connected to Synadia Cloud in the connection graph](./docs/docs/static/connection-graph-consumers.png)
 
@@ -552,16 +556,41 @@ Verify messages are being processed using the NATS CLI.
 
 ### Migrate publisher to use Synadia Cloud
 
-Update the Synadia Cloud stream to listen on the same subjects as its self-managed counterparts.
+These next fews steps need to be done quickly to `publisher` downtime.
 
-```toml
+#### Stop the `publisher`
+
+```shell
+❯ make publisher
+Publishing on nats://localhost:4222
+...
+Publishing order 542
+Publishing order 543
+Publishing order 544
+^C
+```
+
+#### Update the Synadia Cloud stream
+
+Remove `source` from the Synadia Cloud stream and add `subject`.
+
+```diff
 # tf/cloud/cloud.tf
 resource "jetstream_stream" "QUEUE" {
   name      = "QUEUE"
-  # subjects     = ["QUEUE.>"]  # <-- add this line
++ subjects  = ["QUEUE.>"]
   ...
+
+- source {
+-   name = "QUEUE"
+-   external {
+-     api = "$JS.leaf.API"
+-   }
+- }
 }
 ```
+
+Apply the Terraform change.
 
 ```shell
 ❯ terraform apply -auto-approve
@@ -593,7 +622,18 @@ jetstream_stream.QUEUE: Modifications complete after 1s [id=JETSTREAM_STREAM_QUE
 Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 ```
 
-At this point, the Synadia Cloud stream will be sourcing messages from the leaf node stream and ingesting messages on the NATS subject. The on-premise stream will continue ingesting messages due to interest propagation across the leaf node connection. Minimizing the time the stream ingest messages in both ways will lower the number of potential duplicate messages processed by the downstream services.
+At this point, the Synadia Cloud stream will be no longer be sourcing messages from the leaf node stream. It will only be ingesting messages on the NATS subject.
+
+#### Restart `publisher` connected to Synadia Cloud
+
+Start the `publisher` back up again with Synadia Cloud credentials.
+
+```diff
+- NATS_URL=nats://localhost:4222
+- NATS_CREDS_PATH=.nsc/creds/local/A/admin.creds
++ NATS_URL=tls://connect.ngs.global
++ NATS_CREDS_PATH=tf/cloud/cloud.creds
+```
 
 Verify the Synadia Cloud stream is both ingesting messages from the publishers and the services are processing messages from the streams/consumers.
 

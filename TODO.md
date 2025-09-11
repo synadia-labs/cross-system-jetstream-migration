@@ -1,0 +1,1 @@
+- [ ] Prevent `orders` and `shipments` from re-processing messages after migrating from local to Synadia Cloud. While connected to local, they process and removing messages from the work queue stream, but those processed messages are not removed from the Synadia Cloud stream. Perhaps a KV store could be used to track processed messages?

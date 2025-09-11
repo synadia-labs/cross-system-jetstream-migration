@@ -14,7 +14,6 @@ provider "jetstream" {
 
 resource "jetstream_stream" "QUEUE" {
   name      = "QUEUE"
-  subjects  = ["QUEUE.>"]
   storage   = "file"
   retention = "interest"
   max_age   = 24 * 60 * 60     // 24 hours

@@ -17,12 +17,17 @@ nsc --all-dirs "$NSC_DIR" add operator --name local --generate-signing-key --sys
 # create default account
 nsc --all-dirs "$NSC_DIR" add account --name A
 nsc --all-dirs "$NSC_DIR" edit account --name A --js-enable 1
-nsc --all-dirs "$NSC_DIR" edit account --name A --js-enable 3
+# nsc --all-dirs "$NSC_DIR" edit account --name A --js-tier 1 --js-max-disk-stream 1000000000 --js-disk-storage 1000000000 --js-mem-storage 0
+nsc --all-dirs "$NSC_DIR" edit account --name A --js-enable 3 
+# nsc --all-dirs "$NSC_DIR" edit account --name A --js-tier 3 --js-max-disk-stream 1000000000 --js-disk-storage 1000000000 --js-mem-storage 0
 
 # create users in default account
 nsc --all-dirs "$NSC_DIR" add user --name admin --account A
 nsc --all-dirs "$NSC_DIR" add user --name orders --account A --allow-sub 'QUEUE.ORDERS.> ORDERS' --allow-pub 'QUEUE.SHIPMENTS.>'
 nsc --all-dirs "$NSC_DIR" add user --name shipments --account A --allow-sub 'QUEUE.SHIPMENTS.> SHIPMENTS'
+
+# create a user that cannot publish, can only subscribe
+nsc --all-dirs "$NSC_DIR" add user --name subscriber --account A --allow-sub '>' --deny-pub '>'
 
 # # export 
 # nsc --all-dirs "$NSC_DIR" add export --name JS_API --account A --subject '$JS.API.>'
