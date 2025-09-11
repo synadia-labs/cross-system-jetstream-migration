@@ -5,6 +5,7 @@ repo_name: cross-system-jetstream-migration
 
 plugins:
   - include-markdown
+  - gh-admonitions
 
 markdown_extensions:
   - admonition
