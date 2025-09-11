@@ -18,6 +18,9 @@ import (
 func main() {
 	ctx := context.Background()
 
+	// track shipments that have been processed
+	shipments := map[string]bool{}
+
 	config, err := pkg.ReadConfig()
 	if err != nil {
 		fmt.Println("Error reading config:", err)
@@ -43,13 +46,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	shipments, err := queue.Consumer(ctx, "SHIPMENTS")
+	consumer, err := queue.Consumer(ctx, "SHIPMENTS")
 	if err != nil {
 		fmt.Println("Error getting consumer info:", err)
 		os.Exit(1)
 	}
 
-	consumerCtx, err := shipments.Consume(func(msg jetstream.Msg) {
+	consumerCtx, err := consumer.Consume(func(msg jetstream.Msg) {
 		// simulate delay in processing
 		// timer with random interval between 1 and 10 seconds
 		wait := time.Duration(rand.Intn(9)+1) * time.Second
@@ -57,6 +60,12 @@ func main() {
 
 		parts := strings.Split(msg.Subject(), ".")
 		orderId := parts[len(parts)-1]
+
+		// Quit if the shipment has already been processed
+		if _, ok := shipments[orderId]; ok {
+			panic(fmt.Sprintf("Shipment already processed: %s", orderId))
+		}
+		shipments[orderId] = true
 
 		fmt.Printf("Received shipment: %s\n", orderId)
 

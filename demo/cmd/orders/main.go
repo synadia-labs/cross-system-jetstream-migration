@@ -18,6 +18,9 @@ import (
 func main() {
 	ctx := context.Background()
 
+	// track orders that have been processed
+	orders := map[string]bool{}
+
 	config, err := pkg.ReadConfig()
 	if err != nil {
 		fmt.Println("Error reading config:", err)
@@ -43,13 +46,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	orders, err := queue.Consumer(ctx, "ORDERS")
+	consumer, err := queue.Consumer(ctx, "ORDERS")
 	if err != nil {
 		fmt.Println("Error getting consumer info:", err)
 		os.Exit(1)
 	}
 
-	consumerCtx, err := orders.Consume(func(msg jetstream.Msg) {
+	consumerCtx, err := consumer.Consume(func(msg jetstream.Msg) {
 		// simulate delay in processing
 		// timer with random interval between 1 and 5 seconds
 		wait := time.Duration(rand.Intn(4)+1) * time.Second
@@ -58,6 +61,12 @@ func main() {
 		parts := strings.Split(msg.Subject(), ".")
 		orderId := parts[len(parts)-1]
 
+		// Quit if the order has already been processed
+		if _, ok := orders[orderId]; ok {
+			panic(fmt.Sprintf("Order already processed: %s", orderId))
+		}
+		orders[orderId] = true
+
 		fmt.Printf("Received order: %s\n", orderId)
 
 		// start shipment process
@@ -65,6 +74,8 @@ func main() {
 		if err != nil {
 			fmt.Println("Error publishing shipment:", err)
 		}
+
+		fmt.Printf("Sent shipment: %s\n", orderId)
 
 		err = msg.Ack()
 		if err != nil {
